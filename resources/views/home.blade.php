@@ -3,11 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{{ $c['name'] }} | Convention & Event Management Jakarta</title>
-<meta name="description" content="Jakarta-based convention and event management: physical and virtual events, exhibitions, audio-visual production, government promotion missions and trade shows.">
-<meta property="og:title" content="{{ $c['name'] }}">
-<meta property="og:description" content="{{ implode(' ', $c['hero']['title']) }}">
-<meta property="og:image" content="{{ asset('images/about.jpg') }}">
+@include('partials.seo')
 <!-- <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M0 32V0h32v32z' fill='%23F68F1E'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%230F8899'/%3E%3C/svg%3E"> -->
 <link rel="icon" type="image/png" href="{{  asset('images/favicon-unik-full.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +36,7 @@ nav a:not(.btn):hover{color:var(--teal-d)}
 .menu{display:none;background:none;border:0;font-size:26px;color:var(--ink);cursor:pointer}
 /* hero */
 /* .hero{position:relative;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);padding:96px 0;background:linear-gradient(rgba(18,16,17,.58),rgba(18,16,17,.58)),var(--hero) center/cover no-repeat} */
-.hero{position:relative;color:#fff;text-align:center;display:flex;align-items:flex-end;justify-content:center;min-height:max(calc(100vh - 72px),720px);min-height:max(calc(100svh - 72px),720px);padding:96px 0 80px;background-image:linear-gradient(to bottom,rgba(18,16,17,.05) 0%,rgba(18,16,17,.08) 28%,rgba(18,16,17,.6) 45%,rgba(18,16,17,.78) 100%),var(--hero);background-size:100% 100%,cover;background-position:0 0,42% 0;background-repeat:no-repeat}
+.hero{position:relative;color:#fff;text-align:center;display:flex;align-items:flex-end;justify-content:center;min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);padding:96px 0 80px;background-image:linear-gradient(to bottom,rgba(18,16,17,.05) 0%,rgba(18,16,17,.08) 28%,rgba(18,16,17,.6) 45%,rgba(18,16,17,.78) 100%),var(--hero);background-size:100% 100%,cover;background-position:0 0,center 68%;background-repeat:no-repeat}
 .hero .wrap{display:flex;flex-direction:column;align-items:center}
 .hero h1{font-family:"Times New Roman",Times,serif;font-style:italic;font-size:clamp(32px,8vw,92px);font-weight:400;letter-spacing:0;line-height:1.08;text-shadow:0 2px 24px rgba(0,0,0,.45)}
 .hero h1 span{display:block;white-space:nowrap}
@@ -138,7 +134,7 @@ input:focus,textarea:focus{border-color:var(--teal);outline:0}
 footer{border-top:4px solid var(--teal);color:var(--mute);padding:28px 0;font-size:14px}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (max-width:860px){
-.hero{min-height:560px;padding:0 0 48px;background-position:0 0,40% 0}
+.hero{min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);padding:0 0 48px;background-position:0 0,center 58%}
  section{padding:60px 0}
  .about .wrap,.panel.on,.contact .wrap{grid-template-columns:1fr}
  .grid{grid-template-columns:1fr 1fr}.team{grid-template-columns:1fr 1fr}.logos{grid-template-columns:1fr 1fr}
@@ -157,6 +153,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .panel .card h3{font-size:18px;color:var(--ink);margin-bottom:6px}
 @media (max-width:860px){.panel .intro{grid-template-columns:1fr;gap:20px}}
 @media (max-width:520px){.grid{grid-template-columns:1fr}}
+@media (max-width:520px){.hero{background-position:0 0,54% center;padding-bottom:32px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 </head>
@@ -165,8 +162,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
      <a class="logo" href="#top" aria-label="{{ $c['name'] }}"><img src="{{ asset('images/logo-unik-navbar@2x.png') }}" alt="{{ $c['name'] }}" width="459" height="118"></a>
  <button class="menu" aria-label="Menu" aria-expanded="false" id="mb">☰</button>
  <nav id="nav">
-  <a href="#about">About</a><a href="#services">Services</a><a href="#why">Why us</a><a href="#team">Team</a><a href="#clients">Clients</a>
-  <a class="btn" href="#contact">Contact us</a>
+  <a href="#about">About</a><a href="#services">Services</a><a href="#why">Why us</a><a href="#clients">Clients</a><a href="#team">Team</a>
+  <a class="btn" href="https://wa.me/{{ $c['contact']['whatsapp'] }}?text={{ rawurlencode('Hello UNIK Event Solutions, I would like to plan an event.') }}" target="_blank" rel="noopener">Contact us</a>
  </nav>
 </div></header>
 
@@ -174,7 +171,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <section class="hero" style="--hero:url('{{ asset('images/'.$c['hero']['photo'].'.jpg') }}')"><div class="wrap">
  <h1>@foreach($c['hero']['title'] as $line)<span>{{ $line }}</span>@endforeach</h1>
  <p>{{ $c['hero']['text'] }}</p>
- <div class="acts"><a class="btn" href="#contact">Plan your event</a><a class="btn ghost" href="#services">See our work</a></div>
+ <div class="acts"><a class="btn" href="https://wa.me/{{ $c['contact']['whatsapp'] }}?text={{ rawurlencode('Hello UNIK Event Solutions, I would like to plan an event.') }}" target="_blank" rel="noopener">Plan your event</a><a class="btn ghost" href="#services">See our work</a></div>
 </div></section>
 
 <section class="about" id="about"><div class="wrap">

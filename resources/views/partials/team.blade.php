@@ -29,7 +29,7 @@
 
 <section id="team"><div class="wrap tm-grid">
  <div class="tm-main">
-  <h2>Our team</h2><div class="rule"></div>
+  <h2>{{ __('site.team') }}</h2><div class="rule"></div>
   <p class="lead">{{ $c['team_text'] ?? '' }}</p>
   <div class="tm-list">
    @foreach(($c['team'] ?? []) as [$name, $role, $photo])
@@ -48,7 +48,12 @@
   </blockquote>
   <figcaption>-{{ $qBy }}</figcaption>
   @if($qBtn)
-   <a href="{{ $qBtn['href'] }}">{{ $qBtn['label'] }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+   @php
+    $qHref = !empty($qBtn['whatsapp'])
+     ? 'https://wa.me/'.$c['contact']['whatsapp'].'?text='.rawurlencode('Halo UNIK Event Solutions, saya ingin berdiskusi tentang acara.')
+     : $qBtn['href'];
+   @endphp
+   <a href="{{ $qHref }}" @if(!empty($qBtn['whatsapp'])) target="_blank" rel="noopener" @endif>{{ $qBtn['label'] }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   @endif
  </figure>
 </div></section>

@@ -1,5 +1,6 @@
 @php
  $w = config('whatwedo');
+ $lang = app()->getLocale();
  $wi = [
   'calendar' => '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
   'users'    => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
@@ -29,7 +30,7 @@
 .wd-tab[aria-selected="true"]{background:var(--teal-d);border-color:var(--teal-d);color:#fff}
 .wd-panel{display:none}
 .wd-panel.on{display:block}
-.wd-phead{margin-bottom:28px}
+.wd-phead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px 24px;margin-bottom:28px}
 .wd-phead h3{font-size:clamp(26px,3vw,34px);line-height:1.2;margin:10px 0}
 .wd-phead p{margin:0;color:var(--mute);max-width:38em;font-size:15px}
 .wd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
@@ -69,6 +70,25 @@
 @media (max-width:980px){.wd-grid{grid-template-columns:1fr 1fr}.wd-head{grid-template-columns:1fr;gap:28px}}
 @media (max-width:620px){.wd-grid{grid-template-columns:1fr}.wd-deco{width:380px;height:380px;right:-160px}.wd-side ul{gap:24px}}
 @media (prefers-reduced-motion:reduce){.wd-card,.wd-im img,.wd-view svg,.wd-tab{transition:none}}
+.wd-card{color:inherit;text-decoration:none}
+.wd-card:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.wd-view{display:inline-flex;align-items:center;gap:6px;font:600 12.5px Figtree,system-ui,sans-serif;color:var(--teal-d);white-space:nowrap}
+.wd-empty{grid-column:1/-1;padding:40px 0;color:var(--mute)}
+.wd-pager{display:flex;align-items:center;gap:12px;flex:none}
+.wd-pager[hidden]{display:none}
+.wd-pager button{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:border-color .2s,color .2s}
+.wd-pager button:hover:not(:disabled){border-color:var(--teal);color:var(--teal-d)}
+.wd-pager button:disabled{opacity:.35;cursor:default}
+.wd-pager svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wd-count{min-width:64px;text-align:center;font:600 14px Figtree,system-ui,sans-serif;color:var(--mute)}
+.wd-track{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:10px 4px 26px;margin:-10px -4px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.wd-track::-webkit-scrollbar{display:none}
+.wd-track>*{flex:0 0 calc((100% - 52px) / 3);scroll-snap-align:start}
+.wd-track>.wd-empty{flex:1 0 100%}
+.wd-track:focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-radius:10px}
+@media (max-width:980px){.wd-track>*{flex-basis:calc((100% - 26px) / 2)}}
+@media (max-width:620px){.wd-track{gap:16px}.wd-track>*{flex-basis:84%}}
+@media (prefers-reduced-motion:reduce){.wd-track{scroll-behavior:auto}}
 </style>
 
 <section class="wd" id="services">
@@ -97,81 +117,90 @@
   </div>
 
   @foreach($w['services'] as $i => $s)
+   @php $items = isset($projects) ? $projects->get($s['slug'], collect()) : collect(); @endphp
    <div class="wd-panel {{ $i === 0 ? 'on' : '' }}" role="tabpanel">
     <div class="wd-phead">
-     <span class="wd-eyebrow">{{ $s['tab'] }}</span>
-     <h3>{{ $s['heading'] }}</h3>
-     <p>{{ $s['text'] }}</p>
+     <div>
+      <span class="wd-eyebrow">{{ $s['tab'] }}</span>
+      <h3>{{ $s['heading'] }}</h3>
+      <p>{{ $s['text'] }}</p>
+     </div>
+     <div class="wd-pager" hidden>
+      <button type="button" class="wd-prev" aria-label="{{ __('site.prev_projects') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <span class="wd-count" aria-live="polite"></span>
+      <button type="button" class="wd-next" aria-label="{{ __('site.next_projects') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+     </div>
     </div>
-    <div class="wd-grid">
-     @foreach($s['projects'] as [$title, $desc, $photo, $cat])
-      <article class="wd-card">
-       <div class="wd-im"><img src="{{ asset('images/'.$photo.'.jpg') }}" alt="{{ $title }}" loading="lazy"></div>
+    <div class="wd-track" tabindex="0" role="region" aria-label="{{ __('site.projects_of', ['tab' => $s['tab']]) }}">
+     @forelse($items as $p)
+      <a class="wd-card" href="{{ route($lang === 'id' ? 'events.show.id' : 'events.show', $p) }}">
+       <div class="wd-im"><img src="{{ $p->cover_url }}" alt="{{ $p->tr('title') }}" loading="lazy"></div>
        <div class="wd-tx">
-        <span class="wd-cat">{{ $cat }}</span>
-        <h4>{{ $title }}</h4>
+        @if($p->tr('category'))<span class="wd-cat">{{ $p->tr('category') }}</span>@endif
+        <h4>{{ $p->tr('title') }}</h4>
         <div class="wd-row">
-         <p>{{ $desc }}</p>
-         <button type="button" class="wd-view">View project <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+         <p>{{ $p->tr('summary') }}</p>
+         <span class="wd-view">{{ __('site.view_project') }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
        </div>
-      </article>
-     @endforeach
-     <aside class="wd-cta" style="--bg:url('{{ asset('images/'.$w['head']['cta']['photo'].'.jpg') }}')">
-      <h4>@foreach($w['head']['cta']['lines'] as $line)<span>{{ $line }}</span>@endforeach</h4>
-      <p>{{ $w['head']['cta']['text'] }}</p>
-      <a href="#contact">{{ $w['head']['cta']['button'] }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-     </aside>
+      </a>
+     @empty
+      <p class="wd-empty">{{ __('site.coming_soon') }}</p>
+     @endforelse
     </div>
    </div>
   @endforeach
  </div>
 </section>
 
-<dialog class="wd-dlg" id="wdDlg" aria-label="Project preview">
- <button type="button" class="wd-x" aria-label="Close">&times;</button>
- <img id="wdImg" src="" alt="">
- <div class="wd-dbody">
-  <span class="wd-cat" id="wdCat"></span>
-  <h4 id="wdTitle"></h4>
-  <p id="wdDesc"></p>
-  <div class="wd-nav">
-   <button type="button" id="wdPrev" aria-label="Previous project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
-   <span id="wdCount"></span>
-   <button type="button" id="wdNext" aria-label="Next project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-  </div>
- </div>
-</dialog>
-
 <script>
 (function(){
  var tabs=document.querySelectorAll('.wd-tab'),panels=document.querySelectorAll('.wd-panel');
+ var calm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+ function metrics(tr){
+  var first=tr.children[0];if(!first)return null;
+  var gap=parseFloat(getComputedStyle(tr).columnGap)||26;
+  var step=first.getBoundingClientRect().width+gap;
+  return {gap:gap,step:step,vis:Math.max(1,Math.floor((tr.clientWidth+gap)/step))};
+ }
+ function update(panel){
+  var tr=panel.querySelector('.wd-track'),pg=panel.querySelector('.wd-pager');
+  if(!tr||!pg)return;
+  var total=tr.querySelectorAll('.wd-card').length,m=metrics(tr);
+  var overflow=!!m&&total>0&&tr.scrollWidth-tr.clientWidth>4;
+  pg.hidden=!overflow;
+  if(!overflow)return;
+  var i=Math.min(total-1,Math.max(0,Math.round(tr.scrollLeft/m.step))),last=Math.min(total,i+m.vis);
+  panel.querySelector('.wd-count').textContent=(i+1)+(last>i+1?'\u2013'+last:'')+' / '+total;
+  panel.querySelector('.wd-prev').disabled=tr.scrollLeft<=2;
+  panel.querySelector('.wd-next').disabled=tr.scrollLeft>=tr.scrollWidth-tr.clientWidth-2;
+ }
+ function go(panel,dir){
+  var tr=panel.querySelector('.wd-track'),m=metrics(tr);if(!m)return;
+  tr.scrollBy({left:dir*m.step*m.vis,behavior:calm?'auto':'smooth'});
+ }
+
+ panels.forEach(function(p){
+  var tr=p.querySelector('.wd-track'),ticking=false;
+  if(!tr)return;
+  tr.addEventListener('scroll',function(){
+   if(ticking)return;ticking=true;
+   requestAnimationFrame(function(){ticking=false;update(p)});
+  });
+  p.querySelector('.wd-prev').addEventListener('click',function(){go(p,-1)});
+  p.querySelector('.wd-next').addEventListener('click',function(){go(p,1)});
+ });
+
  tabs.forEach(function(t,i){t.addEventListener('click',function(){
   tabs.forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false')});
   panels.forEach(function(p,j){p.classList.toggle('on',j===i)});
+  requestAnimationFrame(function(){update(panels[i])});
  })});
- var dlg=document.getElementById('wdDlg');
- if(!dlg||typeof dlg.showModal!=='function'){document.querySelectorAll('.wd-view').forEach(function(b){b.hidden=true});return;}
- var list=[],cur=0,img=document.getElementById('wdImg'),cat=document.getElementById('wdCat'),
-  ttl=document.getElementById('wdTitle'),dsc=document.getElementById('wdDesc'),cnt=document.getElementById('wdCount');
- function show(i){
-  cur=(i+list.length)%list.length;
-  var c=list[cur],im=c.querySelector('img');
-  img.src=im.currentSrc||im.src;img.alt=im.alt;
-  cat.textContent=c.querySelector('.wd-cat').textContent;
-  ttl.textContent=c.querySelector('h4').textContent;
-  dsc.textContent=c.querySelector('.wd-row p').textContent;
-  cnt.textContent=(cur+1)+' / '+list.length;
- }
- document.querySelectorAll('.wd-view').forEach(function(b){b.addEventListener('click',function(){
-  var card=b.closest('.wd-card');
-  list=[].slice.call(card.closest('.wd-panel').querySelectorAll('.wd-card'));
-  show(list.indexOf(card));dlg.showModal();
- })});
- document.getElementById('wdPrev').addEventListener('click',function(){show(cur-1)});
- document.getElementById('wdNext').addEventListener('click',function(){show(cur+1)});
- dlg.querySelector('.wd-x').addEventListener('click',function(){dlg.close()});
- dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
- dlg.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});
+
+ function active(){return document.querySelector('.wd-panel.on')}
+ window.addEventListener('resize',function(){var a=active();if(a)update(a)});
+ window.addEventListener('load',function(){var a=active();if(a)update(a)});
+ var a=active();if(a)update(a);
 })();
 </script>

@@ -2,22 +2,22 @@
 
 // Semua konten website ada di sini. Foto ada di public/images (tulis nama file tanpa .jpg).
 return [
-    'name'  => 'UNIK Event Solutions',
+    'name' => 'UNIK Event Solutions',
     'legal' => 'PT Kinarya Abimantrana Sentosa',
 
     'hero' => [
-        'title'    => ['Events that leave a', 'positive impact.'], // satu item = satu baris
-        'text'     => 'We bring ideas to life through impactful events and meaningful experiences, from conventions and trade shows to government missions and virtual events.',
-        'photo'    => 'about',
-        'photo_alt'=> 'Traditional dance performance on a lit stage in a ballroom',
+        'title' => ['Events that leave a', 'positive impact.'], // satu item = satu baris
+        'text' => 'We bring ideas to life through impactful events and meaningful experiences, from conventions and trade shows to government missions and virtual events.',
+        'photo' => 'about2',
+        'photo_alt' => 'Traditional dance performance on a lit stage in a ballroom',
     ],
 
-    'about'  => 'UNIK is a Jakarta-based professional convention and event management company. We handle every part of planning and managing physical and virtual events, exhibitions, audio-visual production, government-sponsored promotion missions, and trade shows.',
+    'about' => 'UNIK is a Jakarta-based professional convention and event management company. We handle every part of planning and managing physical and virtual events, exhibitions, audio-visual production, government-sponsored promotion missions, and trade shows.',
     'belief' => 'We believe great work comes from a conscious act to bring a positive impact. With this always in mind, we strive for excellence that brings mutual satisfaction to every individual involved.',
-    
-        'why' => [
+
+    'why' => [
         'title' => 'Why Choose Us ?',
-        'text'  => 'Our strength lies in the combination of creative thinking and disciplined execution, from the first idea to the last cue.',
+        'text' => 'Our strength lies in the combination of creative thinking and disciplined execution, from the first idea to the last cue.',
         'items' => [
             ['landmark', 'Trusted by national institutions', 'We have delivered events for government ministries, national agencies, and international gatherings, including the Interpol General Assembly in Bali and World Press Freedom Day. Protocol, scheduling, and stage production are handled with the precision these occasions demand.'],
             ['layers', 'Complete services under one roof', 'Event management, meeting planning, creative development, and digital and multimedia production are handled by one team. You work with a single partner from concept and design to staging, broadcast, and final handover.'],
@@ -28,7 +28,7 @@ return [
         ],
     ],
 
-        'team_text' => 'A million different interests, life stories, and skills, with one thing in common: a penchant for great work.',
+    'team_text' => 'A million different interests, life stories, and skills, with one thing in common: a penchant for great work.',
     'team' => [
         ['Nonny Jelita', 'CEO', 'nonny'],
         ['Gracia Wuwungan', 'Managing Director', 'gracia'],
@@ -39,7 +39,7 @@ return [
         ['Kiky', 'Account Executive', 'kiki'],
     ],
 
-        // projects: [judul, deskripsi, foto]  -- foto ada di public/images (tanpa .jpg)
+    // projects: [judul, deskripsi, foto]  -- foto ada di public/images (tanpa .jpg)
     'services' => [
         [
             'tab' => 'Event Management', 'title' => 'Event Management',
@@ -88,7 +88,7 @@ return [
         ],
     ],
 
-        // [nama, file (di public/images/clients), lebar, tinggi]
+    // [nama, file (di public/images/clients), lebar, tinggi]
     'clients' => [
         ['BEKRAF', 'bekraf', 616, 606],
         ['Guntur Soekarno', 'guntur-soekarno', 361, 32],
@@ -109,12 +109,12 @@ return [
     ],
 
     'contact' => [
-        'address'   => ['Jl. TB. Simatupang, Harka Offices', 'Alamanda Tower Lt. 2 Unit H1 No. 23-24', 'Cilandak Barat, Jakarta Selatan 12430'],
-        'phone'     => '021 22760303',
-        'mobile'    => '081215872907',
-        'whatsapp'  => '6281215872907',
-        'email'     => 'unikeventsolutions@gmail.com',
+        'address' => ['Jl. TB. Simatupang, Harka Offices', 'Alamanda Tower Lt. 2 Unit H1 No. 23-24', 'Cilandak Barat, Jakarta Selatan 12430'],
+        'phone' => '021 22760303',
+        'mobile' => '081215872907',
+        'whatsapp' => '6281288662235',
+        'email' => 'unikeventsolutions@gmail.com',
         'instagram' => 'unikeventsolution',
-        'website'   => 'www.unikeventsolution.com',
+        'website' => 'www.unikeventsolution.com',
     ],
 ];
