@@ -86,7 +86,8 @@ class EventPageTest extends TestCase
 
         $response->assertOk()
             ->assertSee('class="gal-pager"', false)
-            ->assertSee('class="gal-next"', false);
+            ->assertSee('class="gal-next"', false)
+            ->assertSee('aria-label="Open photo 7"', false);
 
         $this->assertSame(2, substr_count($response->getContent(), 'class="gallery-slide"'));
         $this->assertSame(7, substr_count($response->getContent(), 'class="gl"'));
