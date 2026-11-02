@@ -115,6 +115,6 @@ return [
         'whatsapp' => '6281288662235',
         'email' => 'unikeventsolutions@gmail.com',
         'instagram' => 'unikeventsolution',
-        'website' => 'www.unikeventsolution.com',
+        'website' => 'unikcomunication.com',
     ],
 ];

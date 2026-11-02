@@ -105,19 +105,25 @@ h2{font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.8px;margin-bo
 .lg{--k:1;display:block;flex:none;height:calc(var(--h) * var(--k) * 1px);background:#8b9a9e;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;transition:background .25s}
 .lg:hover{background:var(--teal)}
 .marq{overflow:hidden;padding:40px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.marq-track{display:flex;align-items:center;width:max-content;animation:marq 45s linear infinite}
-.marq-track .lg{margin-right:72px}
+.marq-track{display:flex;align-items:center;flex-wrap:nowrap;width:max-content;min-width:100%;animation:marq 28s linear infinite;will-change:transform}
+.marq-track .lg{flex:0 0 auto;margin-right:72px}
 .marq:hover .marq-track{animation-play-state:paused}
-@keyframes marq{to{transform:translateX(-50%)}}
+@keyframes marq{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
 .collab-head{display:flex;align-items:center;gap:18px;margin:56px 0 32px;color:var(--mute);font-size:15px}
 .collab-head:before,.collab-head:after{content:"";flex:1;height:1px;background:var(--line)}
 .collab-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:28px 64px}
-@media (max-width:860px){.clients .head{text-align:left}.clients .head .lead{max-width:100%}.lg{--k:.72}.marq-track .lg{margin-right:48px}.collab-row{gap:24px 40px}}
+@media (max-width:860px){
+ .clients .head{text-align:left}.clients .head .lead{max-width:100%}
+ .lg{--k:.72}
+ .marq{padding:28px 0}
+ .marq-track .lg{margin-right:40px}
+ .collab-row{gap:24px 40px}
+}
 @media (prefers-reduced-motion:reduce){
  .marq{-webkit-mask-image:none;mask-image:none}
- .marq-track{animation:none;flex-wrap:wrap;justify-content:center;gap:28px 56px;width:auto;padding:0 22px}
- .marq-track .lg{margin-right:0}
- .marq-track .lg[aria-hidden="true"]{display:none}
+ .marq-track{animation:marq 30s linear infinite;flex-wrap:nowrap;justify-content:flex-start;width:max-content;padding:0 22px}
+ .marq-track .lg{margin-right:32px}
+ .marq-track .lg[aria-hidden="true"]{display:block}
 }
 /* contact */
 .contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}

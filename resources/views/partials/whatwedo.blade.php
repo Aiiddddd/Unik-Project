@@ -1,6 +1,5 @@
 @php
  $w = config('whatwedo');
- $lang = app()->getLocale();
  $wi = [
   'calendar' => '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
   'users'    => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
@@ -47,14 +46,6 @@
 .wd-view{flex:none;display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;font:600 12.5px Figtree,system-ui,sans-serif;color:var(--teal-d);cursor:pointer;white-space:nowrap}
 .wd-view svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
 .wd-view:hover svg{transform:translateX(3px)}
-.wd-cta{display:flex;flex-direction:column;justify-content:center;min-height:250px;padding:36px 34px;border-radius:10px;background:linear-gradient(135deg,rgba(230,243,245,.97) 35%,rgba(170,214,220,.78)),var(--bg) right center/cover}
-.wd-cta:before{content:"";width:34px;height:2px;margin-bottom:22px;background:var(--teal)}
-.wd-cta h4{margin:0 0 10px;font-size:24px;line-height:1.25;color:var(--teal-d)}
-.wd-cta h4 span{display:block}
-.wd-cta p{margin:0 0 22px;color:var(--mute);font-size:15px}
-.wd-cta a{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border:1.5px solid var(--teal-d);border-radius:999px;background:rgba(255,255,255,.45);color:var(--teal-d);font:600 14px Figtree,system-ui,sans-serif;text-decoration:none}
-.wd-cta a:hover{background:var(--teal-d);color:#fff}
-.wd-cta svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* lightbox */
 .wd-dlg{position:fixed;border:0;padding:0;width:min(920px,92vw);max-height:92vh;overflow:auto;border-radius:14px;background:#fff;color:var(--ink)}
 .wd-dlg::backdrop{background:rgba(15,20,22,.72)}
@@ -67,8 +58,25 @@
 .wd-nav button:hover{border-color:var(--teal);color:var(--teal-d)}
 .wd-nav svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .wd-x{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:22px;line-height:1;cursor:pointer;color:var(--ink)}
-@media (max-width:980px){.wd-grid{grid-template-columns:1fr 1fr}.wd-head{grid-template-columns:1fr;gap:28px}}
-@media (max-width:620px){.wd-grid{grid-template-columns:1fr}.wd-deco{width:380px;height:380px;right:-160px}.wd-side ul{gap:24px}}
+@media (max-width:980px){
+ .wd-grid{grid-template-columns:1fr 1fr}
+ .wd-head{grid-template-columns:1fr;gap:28px}
+ .wd-side{border-left:none;padding-left:0}
+ .wd-side ul{gap:18px}
+ .wd-track>*{flex-basis:calc((100% - 26px) / 2)}
+ .wd-row{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:620px){
+ .wd-grid{grid-template-columns:1fr}
+ .wd-deco{width:380px;height:380px;right:-160px}
+ .wd-side ul{gap:18px}
+ .wd-tabs{gap:8px}
+ .wd-tab{width:100%;justify-content:center}
+ .wd-track{gap:16px}
+ .wd-track>*{flex-basis:100%}
+ .wd-card h4{font-size:18px}
+ .wd-row p{font-size:12.5px}
+}
 @media (prefers-reduced-motion:reduce){.wd-card,.wd-im img,.wd-view svg,.wd-tab{transition:none}}
 .wd-card{color:inherit;text-decoration:none}
 .wd-card:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
@@ -126,26 +134,26 @@
       <p>{{ $s['text'] }}</p>
      </div>
      <div class="wd-pager" hidden>
-      <button type="button" class="wd-prev" aria-label="{{ __('site.prev_projects') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button type="button" class="wd-prev" aria-label="Previous projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
       <span class="wd-count" aria-live="polite"></span>
-      <button type="button" class="wd-next" aria-label="{{ __('site.next_projects') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button type="button" class="wd-next" aria-label="Next projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
      </div>
     </div>
-    <div class="wd-track" tabindex="0" role="region" aria-label="{{ __('site.projects_of', ['tab' => $s['tab']]) }}">
+    <div class="wd-track" tabindex="0" role="region" aria-label="{{ $s['tab'] }} projects">
      @forelse($items as $p)
-      <a class="wd-card" href="{{ route($lang === 'id' ? 'events.show.id' : 'events.show', $p) }}">
-       <div class="wd-im"><img src="{{ $p->cover_url }}" alt="{{ $p->tr('title') }}" loading="lazy"></div>
+      <a class="wd-card" href="{{ route('events.show', $p) }}">
+       <div class="wd-im"><img src="{{ $p->cover_url }}" alt="{{ $p->title }}" loading="lazy"></div>
        <div class="wd-tx">
-        @if($p->tr('category'))<span class="wd-cat">{{ $p->tr('category') }}</span>@endif
-        <h4>{{ $p->tr('title') }}</h4>
+        @if($p->category)<span class="wd-cat">{{ $p->category }}</span>@endif
+        <h4>{{ $p->title }}</h4>
         <div class="wd-row">
-         <p>{{ $p->tr('summary') }}</p>
-         <span class="wd-view">{{ __('site.view_project') }} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+         <p>{{ $p->summary }}</p>
+         <span class="wd-view">View project <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
        </div>
       </a>
      @empty
-      <p class="wd-empty">{{ __('site.coming_soon') }}</p>
+      <p class="wd-empty">Projects for this category are coming soon.</p>
      @endforelse
     </div>
    </div>

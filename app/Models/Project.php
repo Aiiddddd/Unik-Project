@@ -11,7 +11,7 @@ class Project extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'gallery' => 'array',
+        'gallery'      => 'array',
         'is_published' => 'boolean',
     ];
 
@@ -47,19 +47,5 @@ class Project extends Model
     public function getGalleryUrlsAttribute(): array
     {
         return collect($this->gallery ?? [])->map(fn ($p) => asset('storage/'.$p))->values()->all();
-    }
-
-    /** Ambil field sesuai bahasa aktif; kalau terjemahan kosong, pakai versi Inggris. */
-    public function tr(string $field): ?string
-    {
-        if (app()->getLocale() === 'id') {
-            $map = ['title' => 'title_id', 'summary' => 'summary_id', 'category' => 'label_id', 'content' => 'content_id'];
-            $v = isset($map[$field]) ? $this->{$map[$field]} : null;
-            if (filled($v)) {
-                return $v;
-            }
-        }
-
-        return $this->{$field};
     }
 }

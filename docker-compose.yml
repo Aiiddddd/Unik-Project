@@ -1,0 +1,29 @@
+# Taruh di /var/www/unik/docker-compose.yml
+# Nginx tetap yang sudah terpasang di mini PC (host). Compose hanya menjalankan PHP-FPM dan Cloudflare Tunnel.
+services:
+  app:
+    build: ./deploy/php
+    image: unik-php:8.4
+    container_name: unik-app
+    restart: unless-stopped
+    working_dir: /var/www/unik
+    volumes:
+      - /var/www/unik:/var/www/unik
+      - ./deploy/php-unik.ini:/usr/local/etc/php/conf.d/99-unik.ini:ro
+    ports:
+      - "127.0.0.1:9000:9000"        # hanya loopback; JANGAN diubah jadi 0.0.0.0 (Docker melewati UFW)
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: unik-tunnel
+    restart: unless-stopped
+    network_mode: host               # agar bisa menjangkau Nginx di 127.0.0.1:8080
+    command: tunnel --no-autoupdate run
+    env_file:
+      - ./deploy/cloudflared.env     # berisi TUNNEL_TOKEN (jangan masuk Git)
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Projects\Schemas;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -23,7 +24,14 @@ class ProjectForm
                     TextInput::make('title')->required()->maxLength(160)->columnSpanFull(),
                     Select::make('service')->label('Category in "What we do"')->options($services)->required(),
                     TextInput::make('category')->label('Small label on the card')->placeholder('e.g. Government & Institution')->maxLength(80),
-                    FileUpload::make('cover')->label('Cover photo')->image()->disk('public')->directory('projects')->visibility('public')->required()->columnSpanFull(),
+                    Textarea::make('summary')->label('Short description (shown on the card)')->rows(2)->maxLength(200)->columnSpanFull(),
+                    FileUpload::make('cover')->label('Cover photo (JPG, PNG, or WebP, max 8 MB)')
+                        ->image()
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                        ->maxSize(8192)
+                        ->imageResizeMode('contain')->imageResizeTargetWidth('2400')->imageResizeTargetHeight('2400')->imageResizeUpscale(false)
+                        ->disk('public')->directory('projects')->visibility('public')
+                        ->required()->columnSpanFull(),
                 ]),
 
             Section::make('Event page')
@@ -37,22 +45,12 @@ class ProjectForm
                         ->columnSpanFull(),
                     FileUpload::make('gallery')
                         ->label('Gallery photos')
-                        ->image()->multiple()->reorderable()
+                        ->image()->multiple()->reorderable()->maxFiles(40)
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                        ->maxSize(8192)
+                        ->imageResizeMode('contain')->imageResizeTargetWidth('2400')->imageResizeTargetHeight('2400')->imageResizeUpscale(false)
                         ->disk('public')->directory('projects/gallery')->visibility('public')
                         ->columnSpanFull(),
-                ]),
-
-            Section::make('Bahasa Indonesia (opsional)')
-                ->description('Versi Indonesia dari halaman event. Kalau dikosongkan, pengunjung /id melihat teks Inggris.')
-                ->collapsible()
-                ->schema([
-                    TextInput::make('title_id')->label('Judul')->maxLength(160),
-                    TextInput::make('label_id')->label('Label kecil di kartu')->maxLength(80),
-                    RichEditor::make('content_id')
-                        ->label('Konten utama')
-                        ->fileAttachmentsDisk('public')
-                        ->fileAttachmentsDirectory('projects/content')
-                        ->fileAttachmentsVisibility('public'),
                 ]),
 
             Section::make('Details')
