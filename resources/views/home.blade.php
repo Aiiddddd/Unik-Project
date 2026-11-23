@@ -47,13 +47,19 @@ nav a:not(.btn):hover{color:var(--teal-d)}
 .hero .btn.ghost:hover{background:#fff;color:var(--ink);border-color:#fff}
 .wa{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:8;width:58px;height:58px;display:grid;place-items:center;background:#25d366;color:#fff;border-radius:50%;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:transform .15s ease,box-shadow .15s ease}.wa:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.28)}.wa svg{width:26px;height:26px;display:block;fill:currentColor}
 /* about */
-.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.about{background:#f7f9f8}
+.about .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:clamp(36px,7vw,88px);align-items:center}
+.about-copy{max-width:620px}
+.about-kicker{display:block;color:var(--teal-d);font:600 12px Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+.about h2{margin-bottom:18px}
 h2{font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.8px;margin-bottom:22px}
-.rule{width:64px;height:2px;background:var(--or);margin-bottom:24px;border-radius:2px}
-.lead{font-size:19px;color:var(--mute);max-width:34em}
-.belief{background:var(--teal-d);color:#fff;padding:36px;border-radius:0 0 0 70px}
-.belief h3{font-size:24px;margin-bottom:12px}
-.belief p{margin:0}
+.rule{width:52px;height:3px;background:var(--or);margin-bottom:24px;border-radius:2px}
+.lead{font-size:19px;color:var(--mute);max-width:34em;line-height:1.8}
+.belief{position:relative;overflow:hidden;background:#fff;color:var(--ink);padding:42px;border:1px solid #e5eceb;border-radius:24px 24px 24px 6px;box-shadow:0 24px 60px -42px rgba(18,111,124,.38)}
+.belief:before{content:"";position:absolute;top:0;left:42px;width:48px;height:3px;background:var(--teal);border-radius:0 0 3px 3px}
+.belief:after{content:"“";position:absolute;top:2px;right:24px;color:rgba(26,138,152,.12);font:400 104px/1 "Times New Roman",serif}
+.belief h3{position:relative;font-size:25px;margin-bottom:18px}
+.belief p{position:relative;margin:0;color:var(--mute);font-size:17px;line-height:1.8}
 /* services */
 .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 28px}
 .tab{font:700 15px Montserrat,sans-serif;padding:12px 22px;border-radius:999px;border:2px solid var(--line);background:none;color:var(--ink);cursor:pointer}
@@ -137,12 +143,12 @@ input,textarea{width:100%;font:inherit;padding:13px 15px;border-radius:12px;bord
 input:focus,textarea:focus{border-color:var(--teal);outline:0}
 .acts{display:flex;gap:12px;flex-wrap:wrap}
 #note{font-size:14px;color:var(--mute);min-height:1.4em}
-footer{border-top:4px solid var(--teal);color:var(--mute);padding:28px 0;font-size:14px}
-footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (max-width:860px){
 .hero{min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);padding:0 0 48px;background-position:0 0,center 58%}
  section{padding:60px 0}
  .about .wrap,.panel.on,.contact .wrap{grid-template-columns:1fr}
+ .about .wrap{gap:34px}
+ .belief{padding:34px}
  .grid{grid-template-columns:1fr 1fr}.team{grid-template-columns:1fr 1fr}.logos{grid-template-columns:1fr 1fr}
  .logo img{height:32px}
  .menu{display:block}
@@ -181,7 +187,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </div></section>
 
 <section class="about" id="about"><div class="wrap">
- <div>
+ <div class="about-copy">
+  <span class="about-kicker">About UNIK</span>
   <h2>About us</h2><div class="rule"></div>
   <p class="lead">{{ $c['about'] }}</p>
  </div>
@@ -251,7 +258,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 @include('partials.team')
 
-<footer><div class="wrap"><span>© {{ date('Y') }} {{ $c['legal'] }}</span><span>{{ $c['contact']['website'] }}</span></div></footer>
+@include('partials.footer')
 
 <a class="wa" href="https://wa.me/{{ $c['contact']['whatsapp'] }}?text={{ rawurlencode('Hello UNIK Event Solutions, I would like to discuss an event.') }}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 3.1C8.8 3.1 3 8.8 3 16c0 2.5.7 4.9 2 6.9L3 29l6.2-2.1c2 1.1 4.3 1.7 6.8 1.7 7.2 0 13.1-5.7 13.1-13.1S23.2 3.1 16 3.1zm0 22.6c-2.1 0-4.2-.6-6-1.7l-.4-.2-3.7 1.2 1.2-3.6-.2-.4A10.5 10.5 0 0 1 5.5 16c0-5.8 4.7-10.5 10.5-10.5s10.5 4.7 10.5 10.5-4.7 10.5-10.5 10.5zm5.8-7.8c-.3-.2-1.8-.9-2-.9-.2-.1-.4-.1-.6.1-.2.2-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.6-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.2-.3.4-.4.1-.1.2-.3.3-.5.1-.2.1-.3 0-.5-.1-.2-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.8.6.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-.9.2-.2.3-.4.4-.6.1-.2.1-.5 0-.7-.1-.2-.3-.2-.7-.4z"/></svg>

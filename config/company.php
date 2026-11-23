@@ -4,6 +4,10 @@
 return [
     'name' => 'UNIK Event Solutions',
     'legal' => 'PT Kinarya Abimantrana Sentosa',
+    'developer' => [
+        'name' => 'Centrova.id',
+        'url' => 'https://centrova.id',
+    ],
 
     'hero' => [
         'title' => ['Events that leave a', 'positive impact.'], // satu item = satu baris

@@ -259,8 +259,6 @@ nav a:not(.btn):hover { color: var(--teal-d); }
 .back { display: inline-block; margin: 0 0 62px; font-weight: 600; color: var(--teal-d); text-decoration: none; }
 .back:hover { text-decoration: underline; }
 
-footer { border-top: 4px solid var(--teal); padding: 28px 0 32px; font-size: 14px; color: var(--mute); }
-footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .wa {
   position: fixed;
   right: max(18px, env(safe-area-inset-right, 0px));
@@ -417,7 +415,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
  </div>
 </main>
 
-<footer><div class="wrap"><span>© {{ date('Y') }} {{ $c['legal'] }}</span><span>{{ $c['contact']['website'] ?? '' }}</span></div></footer>
+@include('partials.footer')
 
 <a class="wa" href="https://wa.me/{{ $c['contact']['whatsapp'] ?? '' }}?text={{ rawurlencode('Hello UNIK Event Solutions, I would like to discuss an event.') }}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 3.1C8.8 3.1 3 8.8 3 16c0 2.5.7 4.9 2 6.9L3 29l6.2-2.1c2 1.1 4.3 1.7 6.8 1.7 7.2 0 13.1-5.7 13.1-13.1S23.2 3.1 16 3.1zm0 22.6c-2.1 0-4.2-.6-6-1.7l-.4-.2-3.7 1.2 1.2-3.6-.2-.4A10.5 10.5 0 0 1 5.5 16c0-5.8 4.7-10.5 10.5-10.5s10.5 4.7 10.5 10.5-4.7 10.5-10.5 10.5zm5.8-7.8c-.3-.2-1.8-.9-2-.9-.2-.1-.4-.1-.6.1-.2.2-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.6-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.2-.3.4-.4.1-.1.2-.3.3-.5.1-.2.1-.3 0-.5-.1-.2-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.8.6.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-.9.2-.2.3-.4.4-.6.1-.2.1-.5 0-.7-.1-.2-.3-.2-.7-.4z"/></svg>
